@@ -34,17 +34,15 @@ request_count = 0
 # Модель для валидации входных данных
 # Changed here for new variables, but may need to be changed again
 class PredictionInput(BaseModel):
-    Gender: bool
+    Gender_Male: bool
     Age: float
-    Fare: float
-    Region_Code: float
     Annual_Premium: float
     Policy_Sales_Channel: float
-    Vintage: float
-    Vehicle_Age: int
-    Vehicle_Damage: bool
-    Driving_License: bool
-    Previously_Insured: bool
+    Vehicle_Age_1: bool
+    Vehicle_Age_2: bool
+    Vehicle_Damage_Yes: bool
+    Driving_License_1: bool
+    Previously_Insured_1: bool
 @app.get("/stats")
 def stats():
     return {"request_count": request_count}
@@ -61,16 +59,17 @@ def predict_model(input_data: PredictionInput):
     # Создание DataFrame из данных
     # Changed here for new variables, may need to be changed again
     new_data = pd.DataFrame({
-        'Gender': [input_data.Gender],
+        'Gender_Male': [input_data.Gender_Male],
         'Age': [input_data.Age],
-        "Region_Code": [input_data.Region_Code],
+        #"Region_Code": [input_data.Region_Code],
         "Annual_Premium": [input_data.Annual_Premium],
         "Policy_Sales_Channel": [input_data.Policy_Sales_Channel],
-        "Vintage": [input_data.Vintage],
-        "Vehicle_Age": [input_data.Vehicle_Age],
-        "Vehicle_Damage": [input_data.Vehicle_Damage],
-        "Driving_License": [input_data.Driving_License],
-        "Previously_Insured": [input_data.Previously_Insured]
+        #"Vintage": [input_data.Vintage],
+        "Vehicle_Age_< 1 Year": [input_data.Vehicle_Age_1],
+        "Vehicle_Age_> 2 Years": [input_data.Vehicle_Age_2],
+        "Vehicle_Damage_Yes": [input_data.Vehicle_Damage_Yes],
+        "Driving_License_1": [input_data.Driving_License_1],
+        "Previously_Insured_1": [input_data.Previously_Insured_1]
     })
 
     # Предсказание
@@ -79,7 +78,7 @@ def predict_model(input_data: PredictionInput):
     # Преобразование результата в человеко-читаемый формат
     # Note that we need to decide what to call 1 and 0, as in the file it is just named response
     # I need to check what it is actually predicting
-    result = "1" if predictions[0] == 1 else "0"
+    result = "Positive" if predictions[0] == 1 else "Negative"
 
     return {"prediction": result}
 
