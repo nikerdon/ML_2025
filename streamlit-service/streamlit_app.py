@@ -1,12 +1,10 @@
-'''
-Insurance Cross Sales Prediction 
-frontend streamlit app for ML 2025 project 1
+#Insurance Cross Sales Prediction 
+#frontend streamlit app for ML 2025 project 1
 
-based on (uses as template) -- 
-https://github.com/Koldim2001/test_api/blob/microservices-example/streamlit-service/streamlit_app.py
+#based on (uses as template) -- 
+#https://github.com/Koldim2001/test_api/blob/microservices-example/streamlit-service/streamlit_app.py
 
-Last Edit: 27.03.2025 by Elizabeth Gould
-'''
+#Last Edit: 27.03.2025 by Elizabeth Gould
 
 import streamlit as st 
 import requests
@@ -37,7 +35,6 @@ st.write("Enter the client details:")
 #submit_button = st.form_submit_button(label='Submit', on_click=set_stage, args=(1,))
 #I could put this into the if statement above, clearing everything when license is changed
 
-
 # more box clear code examples / templates
 #if st.session_state.stage > 0:
 #    var = st.input(params)
@@ -63,11 +60,14 @@ if not ageP.isdigit():
     st.error("Please enter a valid number for Age.")
     stageA = 0
 elif float(ageP) < 16 or float(ageP) > 120:
-    #Age range in the data set is 20 to 85
+    # Age range in the data set is 20 to 85
     # 16 years is the driving age in the US. 120 is right above the oldest person,
     # so age can't go higher.
     st.error("Please enter a valid age.")
     stageA = 0
+elif float(ageP) < 20 or float(ageP) > 85:
+    st.warning("The entered age is outside of the expected parameter range.")
+    stageA = 1
 else:
     stageA = 1
 
@@ -96,10 +96,11 @@ elif float(premium) < 0.0:
     # Negative numbers don't make sense in context.
     st.error("Please enter a non-negative number for annual premium.")
     stageP = 0
-elif float(premium) > 1000000:
+elif float(premium) > 600000:
     # This should be a warning. These values are extrapolated and likely to be 
     # erroneous, but may actually exist.
-    st.error("Please check your value for annual premium.")
+    st.warning("The entered number is outside of the expected parameter range. Please check your value for annual premium.")
+    stageP = 1
 else:
     stageP = 1
 
@@ -137,21 +138,24 @@ else:
 psc = st.text_input("Policy Sales Channel", value=100)
 if not psc.isdigit():
     # Goes from 1 to 163, with gaps.
-    st.error("Please enter a whole number between 1 and 170.")
+    st.error("Please enter a whole number between 1 and 180.")
     stageC = 0
 elif not float(psc).is_integer():
     # Note that non-integer numbers don't break the model, but seem meaningless
     # if the number is identifying a place or policy.
-    st.error("Please enter a whole number between 1 and 170.")
+    st.error("Please enter a whole number between 1 and 180.")
     stageC = 0
-elif float(psc) < 1 or float(psc) > 170:
+elif float(psc) < 1 or float(psc) > 180:
     # 170 chosen as the cutoff based on the idea that perhaps not all 
     # are accounted for in the data, as there are gaps.
     # Going above this number doesn't break the program, but the response
     # will be meaningless if the channel doesn't exist, or the data is 
     # extrapolated too far.
-    st.error("Please enter a whole number between 1 and 170.")
+    st.error("Please enter a whole number between 1 and 180.")
     stageC = 0
+elif float(psc) > 166:
+    st.warning("The entered number is not on the known list of policy sales channels. Check to see if it is correct.")
+    stageC = 1
 else:
     stageC = 1
 
@@ -161,7 +165,7 @@ else:
 # Кнопка для отправки запроса
 if st.button("Predict"):
     # Проверка, что все поля заполнены
-    if ageP.isdigit() and premium.isdigit() and psc.isdigit() and stageA and stageC and stageP:
+    if stageA and stageC and stageP:
         # Подготовка данных для отправки
         data = {
             "Gender_Male": bool(gender),
