@@ -51,6 +51,22 @@ def stats():
 def health():
     return {"status": "OK"}
 
+def transform_data(dataset):
+    ds_new = dataset.to_numpy()
+
+    # transform to standard scalar (note that we need to load this data)
+    # mean: 38.38755612, 30468.54795689, 112.40399492
+    # scale: 1.49967598e+01, 1.64761977e+04, 5.40481829e+01
+    age_mean, ap_mean, psc_mean = 38.38755612, 30468.54795689, 112.40399492
+    age_std, ap_std, psc_std = 14.9967598, 1.64761977e04, 54.0481829
+    ds_new[1] = (ds_new[1] - age_mean) / age_std
+    ds_new[2] = (ds_new[2] - ap_mean) / ap_std
+    ds_new[3] = (ds_new[3] - psc_mean) / psc_std
+
+    # transform to principle components
+
+    return ds_new
+
 @app.post("/predict_model")
 def predict_model(input_data: PredictionInput):
     global request_count
@@ -72,8 +88,13 @@ def predict_model(input_data: PredictionInput):
         "Previously_Insured_1": [input_data.Previously_Insured_1]
     })
 
+    # this assumes that the model works with the normalized data
+    # and has not information of the original data
+    # I believe this is the case
+    ds_new = transform_data(new_data)
+
     # Предсказание
-    predictions = model.predict(new_data)
+    predictions = model.predict(ds_new)
 
     # Преобразование результата в человеко-читаемый формат
     # Note that we need to decide what to call 1 and 0, as in the file it is just named response
