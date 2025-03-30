@@ -28,6 +28,26 @@ app = FastAPI()
 with open('model.pkl', 'rb') as f:
     model = pickle.load(f)
 
+# transformer of data
+with open('pca.pkl', 'rb') as f:
+    pca = pickle.load(f)
+
+# for rescaling data
+# three posibilities: standard_scale object, csv file with data of mean, then std, or just adding the data here
+# the third variant is not recommended
+
+#with open('scaler.pkl', 'rb') as f:
+#   scaler = pickle.load(f)
+
+#msd = pd.read_csv('mean_std.csv')
+#age_mean, ap_mean, psc_mean = msd.at(0, 'Age'), msd.at(0, 'Annual_Premium'), msd.at(0, 'Policy_Sales_Channel')
+#age_std, sp_std, psc_std = msd.at(1, 'Age'), msd.at(1, 'Annual_Premium'), msd.at(1, 'Policy_Sales_Channel')
+
+# mean: 38.38755612, 30468.54795689, 112.40399492
+# scale: 1.49967598e+01, 1.64761977e+04, 5.40481829e+01
+age_mean, ap_mean, psc_mean = 38.38755612, 30468.54795689, 112.40399492
+age_std, ap_std, psc_std = 14.9967598, 1.64761977e04, 54.0481829
+
 # Счетчик запросов
 request_count = 0
 
@@ -54,18 +74,18 @@ def health():
 def transform_data(dataset):
     ds_new = dataset.to_numpy()
 
-    # transform to standard scalar (note that we need to load this data)
-    # mean: 38.38755612, 30468.54795689, 112.40399492
-    # scale: 1.49967598e+01, 1.64761977e+04, 5.40481829e+01
-    age_mean, ap_mean, psc_mean = 38.38755612, 30468.54795689, 112.40399492
-    age_std, ap_std, psc_std = 14.9967598, 1.64761977e04, 54.0481829
+    # transform to standard scalar
     ds_new[1] = (ds_new[1] - age_mean) / age_std
     ds_new[2] = (ds_new[2] - ap_mean) / ap_std
     ds_new[3] = (ds_new[3] - psc_mean) / psc_std
 
-    # transform to principle components
+    # transform with pickled scaler
+    # ds_new[1:4] = scaler.transform(ds_new[1:4])
 
-    return ds_new
+    # use pca analysis
+    ds_n2 = pca.transform(ds_new)
+
+    return ds_n2
 
 @app.post("/predict_model")
 def predict_model(input_data: PredictionInput):
