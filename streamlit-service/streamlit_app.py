@@ -4,13 +4,15 @@
 #based on (uses as template) -- 
 #https://github.com/Koldim2001/test_api/blob/microservices-example/streamlit-service/streamlit_app.py
 
+#streamlit run streamlit_app.py
+
 #Last Edit: 27.03.2025 by Elizabeth Gould
 
 import streamlit as st 
 import requests
 from requests.exceptions import ConnectionError
 
-ip_api = "insurance-api"
+ip_api = "127.0.0.1"
 port_api = "5000"
 
 # Заголовок приложения
@@ -82,7 +84,7 @@ else:
 # Insurance details
 
 selIns = st.selectbox("Have they been previously insured?", ['Yes', 'No'])
-if selLic == 'Yes':
+if selIns == 'Yes':
     insured = True
 else:
     insured = False
@@ -108,7 +110,7 @@ else:
 
 selAgeV = st.selectbox("What is their vehicle's age?", ['< 1 year', '1 - 2 years', '> 2 years'])
 if selAgeV == '< 1 year':
-    ageV1 = False
+    ageV1 = True
     ageV2 = False
 elif selAgeV == '1 - 2 years':
     ageV1 = False
@@ -177,7 +179,7 @@ if st.button("Predict"):
             "Vehicle_Age_1": bool(ageV1),
             "Vehicle_Age_2": bool(ageV2),
             "Vehicle_Damage_Yes": bool(damage),
-            "Driving_License_1": bool(license),
+            "Driving_License_1": bool(lic),
             "Previously_Insured_1": bool(insured)
         }
 
