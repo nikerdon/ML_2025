@@ -7,12 +7,12 @@ Last Edit: 06.04.2025 by Elizabeth Gould
 # Status
 ---
 
-Done -- Preprocessing, Backend, Frontend
-In Progress -- 
-To Do -- Training, Testing, Docker?
-Persistent -- Documentation, linking pieces
+* Done -- Preprocessing, Backend, Frontend
+* In Progress -- 
+* To Do -- Training, Testing, Docker?
+* Persistent -- Documentation, linking pieces
 
-Other (optional) -- Translations
+* Other (optional) -- Translations
 
 # How to Use
 ---
