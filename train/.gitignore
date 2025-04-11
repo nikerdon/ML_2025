@@ -1,8 +1,0 @@
-train_short.csv
-test_short.csv
-X_train_pca.pkl
-X_train_phy.pkl
-y_train.pkl
-X_test_pca.pkl
-X_test_phy.pkl
-y_test.pkl

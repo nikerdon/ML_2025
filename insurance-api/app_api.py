@@ -101,9 +101,9 @@ def transform_data(dataset):
 
     # use pca analysis
     # Remove this code if the model requires the original data.
-    #ds_new = pca.transform(dataset)
+    ds_new = pca.transform(dataset)
 
-    #return ds_new
+    return ds_new
     return dataset
 
 # Structure copied from example code. Receive parameters and predict responses. 
@@ -132,8 +132,8 @@ def predict_model(input_data: PredictionInput):
     ds_new = transform_data(new_data)
 
     # Предсказание
-    predictions = model.predict(ds_new)
-    #predictions = model.predict(ds_new[:, 0:6])
+    #predictions = model.predict(ds_new)
+    predictions = model.predict(ds_new[:, 0:6])
 
     
     # Преобразование результата в человеко-читаемый формат
