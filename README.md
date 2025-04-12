@@ -7,12 +7,10 @@ Last Edit: 12.04.2025 by Elizabeth Gould
 # Status
 ---
 
-* Done -- Preprocessing, Backend, Frontend, Training
-* In Progress -- Testing, Documentation
+* Done -- Preprocessing, Backend, Frontend, Training, Testing
+* In Progress -- Documentation
 * To Do -- Docker
 * Persistent -- linking pieces
-
-* Other (optional) -- Translations
 
 # How to Use
 ---
@@ -73,25 +71,13 @@ Three potential starting points:
 
 Data here: train_short.csv, test_short.csv, X_train_phy.pkl, X_train_pca.pkl, y_train.pkl, X_test_phy.pkl, X_test_pca.pkl, y_test.pkl
 
-scoring : https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter Варианты: ‘balanced_accuracy’, ‘f1’, ‘precision’ -- Нужно смотреть, но не знаю, как пользоваться. Он сказал, ‘precision’  важнее 'recall', но чтобы делать свою оценку, нам нужно ее придумать и спрограммировать. 
-(‘roc_auc’ тоже существует.)
-
-n_jobs наверно полезно
-
 Classifiers:
-1. Decision Tree -- Trees tend to want 20-50 minimum samples and to go very deep. 
-2. Random Forest
+1. Decision Tree -- Trees tend to want 20-50 minimum samples and to go very deep. Even at tree depth 15, the trees are still classifying almost all the data as 0.
+2. Random Forest -- Doesn't help trees find good solutions. Training time can be less than 2 hours for n_jobs = 8.
 3. K-Nearest Neighbors (KNN) -- kNN is not very good for a large dataset due to the fact that it is not trained, but runs after the fact, on every new data point. In principle, this model can be useful, but would require substantial thinning or clusterization and averaging to get good results.
 4. Support Vector Machine (SVM) -- This is the non-linear version of linear classification. Attempts to run this model with n_jobs = 8 did not finish even after 12 hours. It is possible that a linear classifier without a non-linear kernel can give decent results.
 5. Naive Bayes: Naive Bayes seems like a good choice due to the large number of datapoints and categorical nature of most of the data.
-6. other ensembles : https://scikit-learn.org/stable/modules/ensemble.html
-Bagging seem like the best choice.
-
-Мне кажется, лучше не пробовать boosting.
-
-Decision Tree Best Params: {'max_depth': 10, 'min_samples_split': 15} Time:  3825.9848759174347  sec or  63.76641459862391 min. Не мощный компьютер, без распараллеливания.
-
-Деревья и KNN ~ 17 мин. SVM сейчас хочет много времени. Попробую распараллеливание. Я могу послить готовые модель для проверки / тестирования. Было бы лучше, если я знала то, что вы хотели пробовать. Там разные деревья. Сейчас делаю KNN. Я пробую лес ночью. Я не знаю, как хорошо они. Деревья хочет 50 min members и так глубоко как можно. Я не могу послать kNN, потому что размер похоже на размер данных. Но они не очень медленные. 'precision' хочет больше соседов, а других меньше. Сейчас лес. Лес: меньше 2 часа с n_jobs = 8. SVM ещё не закончится.
+6. other ensembles: Ensemble models seem like a good choice, if we had the time to design and build one.
 
 # Backend and Frontend
 ---
