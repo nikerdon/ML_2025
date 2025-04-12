@@ -139,7 +139,7 @@ def predict_model(input_data: PredictionInput):
     # Преобразование результата в человеко-читаемый формат
     # Note that we need to decide what to call 1 and 0, as in the file it is just named response
     # I need to check what it is actually predicting
-    result = str(predictions) #"Positive" if predictions[0] == 1 else "Negative"
+    result = "Positive" if predictions[0] == 1 else "Negative"
     #strng = f'gen: {ds_new["Gender_Male"][0]}, age: {ds_new["Age"][0]}, ap: {ds_new["Annual_Premium"][0]}, psc: {ds_new["Policy_Sales_Channel"][0]}, va1: {ds_new["Vehicle_Age_< 1 Year"][0]}, va2: {ds_new["Vehicle_Age_> 2 Years"][0]}, vd: {ds_new["Vehicle_Damage_Yes"][0]}, dl: {ds_new["Driving_License_1"][0]}, pi {ds_new["Previously_Insured_1"][0]}' 
     #strng = f'1: {ds_new[0,0]}, 2: {ds_new[0,1]}, 3: {ds_new[0,2]}, 4: {ds_new[0,3]}, 5: {ds_new[0,4]}, 6: {ds_new[0,5]}' 
 
