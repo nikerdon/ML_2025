@@ -94,7 +94,12 @@ In the transformer:
 
 
 # Team members:
+---
+
 Nikita Korenko
+
 Elizabeth Gould
+
 Sofiia Mylnikova
+
 Gibert Elena
