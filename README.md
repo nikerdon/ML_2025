@@ -64,7 +64,7 @@ In the transformer:
 # Preprocessing
 ---
 
-I am going to let others move the comments here.
+A check for empty values ​​was performed; outliers were removed using the IQR method. A correlation matrix was constructed to select the parameters used. Normalization and centering of numerical data and one-hot coding of categorical features were performed. Principal сomponents analysis was performed.
 
 # Training and Testing
 ---
