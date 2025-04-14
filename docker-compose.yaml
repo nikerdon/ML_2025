@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  model-api:
+    build:
+      context: .
+      dockerfile: model-api/Dockerfile
+    image: model-api:latest
+    container_name: model-api
+    ports:
+      - "500:5000"
+    volumes:
+      # - ./model-api/Gradient_Boosting_Classifier_Model.pkl:/app/Gradient_Boosting_Classifier_Model.pkl
+      - ./model-api/bayes_model.pkl:/app/bayes_model.pkl
+
+  streamlit-web:
+    build:
+      context: .
+      dockerfile: streamlit-service/Dockerfile
+    image: streamlit-service:latest
+    container_name: streamlit-service
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./streamlit-service/streamlit_app.py:/app/streamlit_app.py
